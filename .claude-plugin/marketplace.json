@@ -1,0 +1,11 @@
+{
+  "name": "codex-flow",
+  "owner": { "name": "Hugo Clemente", "url": "https://github.com/hugo-clemente" },
+  "plugins": [
+    {
+      "name": "codex-flow",
+      "source": "./",
+      "description": "Claude+Codex dual-model workflow skills: brainstorm/plan/SDD with Codex as adversarial reviewer and fast implementer."
+    }
+  ]
+}

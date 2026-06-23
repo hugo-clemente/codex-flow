@@ -1,0 +1,72 @@
+---
+name: sdd-with-codex-implementer
+description: Use when executing an implementation plan task-by-task in the current session with Codex writing the code. Triggers - invoked by writing-plans-codex, "run the plan with codex", "sdd with codex implementer", "execute the plan, codex implements", or when an approved plan is ready and Codex should do the per-task implementation while Claude reviews.
+---
+
+# Subagent-Driven Development — Codex Implementer
+
+## Overview
+
+The `superpowers:subagent-driven-development` loop with ONE substitution: each task's IMPLEMENTER
+is a `codex exec` call (fast/low lane), not a Claude subagent. Claude stays controller + reviewer.
+Everything else in SDD is unchanged.
+
+**REQUIRED SUB-SKILL: `codex-flow:codex-lanes`** — load it for the implementer-lane invocation.
+
+## REQUIRED BACKGROUND
+
+You MUST follow `superpowers:subagent-driven-development` for the whole loop — controller duties,
+`task-brief` / `review-package` file handoffs, the per-task **two-verdict review (spec compliance
++ code quality)**, the ledger, the final whole-branch review, and
+`superpowers:finishing-a-development-branch`. This skill overrides ONLY the implementer dispatch
+and adds a final cross-model challenge.
+
+## When to Use
+
+- executing an approved plan, Codex implementing each task, Claude reviewing
+- NOT: tightly-coupled tasks needing one mind · Codex CLI absent (→ plain `superpowers:subagent-driven-development`)
+
+## What changes vs base SDD
+
+| step | base SDD | here |
+|---|---|---|
+| implementer | Claude subagent | `codex exec` implementer lane (`codex-flow:codex-lanes` §5) |
+| task reviewer | Claude subagent, two verdicts | **unchanged** — still Claude, still both verdicts |
+| final review | Claude code-reviewer | Claude code-reviewer **+ Codex challenge (Seam 4)** |
+| everything else | — | unchanged |
+
+## Per-task implementer dispatch (replaces base SDD's implementer step)
+
+1. Record BASE: `git rev-parse HEAD`.
+2. `scripts/task-brief PLAN N` → brief file (base SDD).
+3. Build the Codex prompt file from the brief — XML sections `<task><files><patterns><approach><constraints><testing><verify><output_contract>`. In `<verify>`, give Codex **THIS repo's real commands** — `pnpm --filter @roundtable/<pkg> typecheck` and `pnpm --filter @roundtable/<pkg> test:no-migrate --run <files>` — never a generic `bun test`/`npm test` (baseline Codex guessed `bun test` in a pnpm/vitest repo).
+4. Run the **implementer lane** (`codex-flow:codex-lanes` §5): background launch (`run_in_background: true`) + poll the `-o` result file.
+5. Read the result JSON; map `status` to base SDD's handling:
+   - `completed` → proceed to review
+   - `partial` → keep the diff, finish locally, then review
+   - `failed` / missing or malformed JSON → roll back to BASE, re-dispatch or escalate
+6. Codex's `status:completed` + `verification_summary` are the implementer's **self-report, not the
+   review.** Continue to base SDD's task-reviewer (fresh Claude subagent, both verdicts, fed the
+   `review-package` diff) exactly as normal, and re-run verification with the repo's pnpm commands
+   — don't accept Codex's sandbox test run as proof.
+
+## Seam 4 — final whole-branch challenge (after all tasks)
+
+Base SDD's final review stays (Claude code-reviewer on the most capable model). ADD a Codex
+challenge on the branch diff: **review lane** (`codex-flow:codex-lanes` §4) with `--base
+<merge-base>` and the code-challenge prompt. Two-model final review; you adjudicate fixes
+(review-only — no autofix on shipping code).
+
+## Escalation
+
+A task that needs more than `low` effort isn't clean transcription → tighten the brief so it is,
+OR hand THAT task to a Claude implementer subagent (base SDD). Keep Codex in the fast/low lane.
+
+## Common Mistakes (from baseline testing)
+
+| Baseline / risk | Do instead |
+|---|---|
+| used a Claude implementer subagent (the Codex seam never emerged) | implementer = `codex exec` implementer lane |
+| Codex prompt said `bun test` / `npm test` | pass THIS repo's pnpm commands in `<verify>` |
+| ad-hoc "read files + run tests" instead of the structured review | route the diff through base SDD's task-reviewer (both verdicts) |
+| skipped the final Codex challenge | run Seam 4 on the branch diff before finishing |
