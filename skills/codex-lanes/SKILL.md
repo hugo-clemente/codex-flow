@@ -25,8 +25,9 @@ off a Claude self-review as the Codex pass.
   forever waiting for EOF. The #1 failure. Pick exactly one per call:
   - short prompt → positional arg + `< /dev/null`
   - long/structured prompt → `- < prompt.md` (the file IS stdin; do NOT also add `</dev/null`)
-- **`-C "$_REPO_ROOT"`** — resolve eagerly: `_REPO_ROOT="$(git rev-parse --show-toplevel)"`.
+- **`-C "$_REPO_ROOT"`** — resolve eagerly: `_REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"`.
 - **`-m gpt-5.5`** — pin the model.
+- **`--skip-git-repo-check`** — always pass it. No-op inside a git repo; lets codex run when the cwd / `-C` dir isn't a trusted git repo (e.g. reviewing a spec/plan doc under `~/Documents/claude-plans`, or running outside any repo). Without it codex errors "Not inside a trusted directory".
 - **effort is explicit.** `~/.codex/config.toml` defaults to `high`; an unset effort is neither
   the fast lane nor the xhigh lane. Always pass `-c 'model_reasoning_effort="…"'`.
 - **bound the run.** Prefix `gtimeout 600` (macOS: `brew install coreutils`; Linux: `timeout 600`).
@@ -45,10 +46,10 @@ off a Claude self-review as the Codex pass.
 ## 4. Review lane — invocation (xhigh, standard tier)
 
 ```bash
-_REPO_ROOT="$(git rev-parse --show-toplevel)"
+_REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 gtimeout 600 codex exec -m gpt-5.5 \
   -c 'model_reasoning_effort="xhigh"' \
-  -C "$_REPO_ROOT" -s read-only \
+  -C "$_REPO_ROOT" -s read-only --skip-git-repo-check \
   "<adversarial prompt — §7>  Target: <path or 'the working diff'>." \
   < /dev/null
 ```
@@ -61,7 +62,7 @@ Doc autofix (spec/plan): swap `-s read-only` → `-s workspace-write` and end th
 The result schema (§6) is not shipped on disk — write it to a throwaway file first:
 
 ```bash
-_REPO_ROOT="$(git rev-parse --show-toplevel)"
+_REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 SCHEMA="$(mktemp)"; cat > "$SCHEMA" <<'JSON'
 { "type":"object","additionalProperties":false,
   "required":["status","files_modified","issues","summary","verification_summary"],
@@ -75,7 +76,7 @@ JSON
 gtimeout 600 codex exec -m gpt-5.5 \
   -c 'model_reasoning_effort="low"' \
   -c 'service_tier="fast"' -c 'features.fast_mode=true' \
-  -C "$_REPO_ROOT" -s workspace-write \
+  -C "$_REPO_ROOT" -s workspace-write --skip-git-repo-check \
   --output-schema "$SCHEMA" \
   -o "$(mktemp -u).json" \
   - < "$PROMPT_FILE"
