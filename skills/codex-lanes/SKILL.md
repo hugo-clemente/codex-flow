@@ -30,8 +30,12 @@ off a Claude self-review as the Codex pass.
 - **`--skip-git-repo-check`** — always pass it. No-op inside a git repo; lets codex run when the cwd / `-C` dir isn't a trusted git repo (e.g. reviewing a spec/plan doc under `~/Documents/claude-plans`, or running outside any repo). Without it codex errors "Not inside a trusted directory".
 - **effort is explicit.** `~/.codex/config.toml` defaults to `high`; an unset effort is neither
   the fast lane nor the xhigh lane. Always pass `-c 'model_reasoning_effort="…"'`.
-- **bound the run.** Prefix `gtimeout 600` (macOS: `brew install coreutils`; Linux: `timeout 600`).
-  Omit only if neither binary exists.
+- **bound the run.** Prefix `gtimeout 3600` (macOS: `brew install coreutils`; Linux: `timeout 3600`) —
+  a generous hang-guard, not a work limit. Omit only if neither binary exists.
+- **long runs go in the background.** Claude Code's foreground Bash tool hard-caps at 600s (10 min); xhigh
+  reviews and implementer tasks routinely exceed that. Launch codex with the Bash tool's
+  `run_in_background: true` and read the output when the process exits — never a plain foreground codex
+  call. `gtimeout` is only the stuck-process backstop.
 
 ## 3. Lanes
 
@@ -45,17 +49,22 @@ off a Claude self-review as the Codex pass.
 
 ## 4. Review lane — invocation (xhigh, standard tier)
 
+xhigh reviews routinely run past 10 min, so run this in the **background** — never a plain foreground
+call (Claude Code's foreground Bash tool hard-caps at 600s). Redirect output to a file:
+
 ```bash
 _REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-gtimeout 600 codex exec -m gpt-5.5 \
+OUT="$(mktemp)"
+gtimeout 3600 codex exec -m gpt-5.5 \
   -c 'model_reasoning_effort="xhigh"' \
   -C "$_REPO_ROOT" -s read-only --skip-git-repo-check \
   "<adversarial prompt — §7>  Target: <path or 'the working diff'>." \
-  < /dev/null
+  < /dev/null > "$OUT" 2>&1
 ```
 
-Doc autofix (spec/plan): swap `-s read-only` → `-s workspace-write` and end the prompt with
-"…then rewrite the file in place, resolving the material findings."
+Launch that with the Bash tool's `run_in_background: true`; when the process exits (the harness notifies
+you), read `$OUT` for the findings. Doc autofix (spec/plan): swap `-s read-only` → `-s workspace-write`
+and end the prompt with "…then rewrite the file in place, resolving the material findings."
 
 ## 5. Implementer lane — invocation (low + fast, structured result)
 
@@ -73,7 +82,7 @@ SCHEMA="$(mktemp)"; cat > "$SCHEMA" <<'JSON'
     "summary":{"type":"string"},
     "verification_summary":{"type":"string"}}}
 JSON
-gtimeout 600 codex exec -m gpt-5.5 \
+gtimeout 3600 codex exec -m gpt-5.5 \
   -c 'model_reasoning_effort="low"' \
   -c 'service_tier="fast"' -c 'features.fast_mode=true' \
   -C "$_REPO_ROOT" -s workspace-write --skip-git-repo-check \
