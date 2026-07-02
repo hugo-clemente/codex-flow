@@ -1,0 +1,21 @@
+.claude-plugin/marketplace.json
+  s_cfb50b510c25b7::t_97756098e0aad6 6,8
+.claude-plugin/plugin.json
+  s_cfb50b510c25b7::t_3b0a6f192c271e 2-4,9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "ba8777530053e2aeddd772a88f449370ac14a040",
+  "prompts": {},
+  "sessions": {
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
