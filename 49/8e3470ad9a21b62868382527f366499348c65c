@@ -1,0 +1,23 @@
+commands/adv-review.md
+  s_cfb50b510c25b7::t_f9d050f1ac148a 10
+README.md
+  s_cfb50b510c25b7::t_a036951a948524 31
+skills/execute-flow/SKILL.md
+  s_cfb50b510c25b7::t_e95a02741b86b9 15-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "498e3470ad9a21b62868382527f366499348c65c",
+  "prompts": {},
+  "sessions": {
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
