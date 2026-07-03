@@ -1,0 +1,27 @@
+scripts/bridge-guard.test.mjs
+  s_cfb50b510c25b7::t_4733b5c4eff00f 15-18,20-23
+  s_cfb50b510c25b7::t_6b2a4e08195343 13-14
+  s_cfb50b510c25b7::t_a48019c8266e63 19
+scripts/bridge-guard.mjs
+  s_cfb50b510c25b7::t_3eaf05cfb95b13 13
+  s_cfb50b510c25b7::t_ba57a32eaacfe0 9-12,14-15,21-24
+  s_cfb50b510c25b7::t_8aae3c8c41d194 124
+  s_cfb50b510c25b7::t_99847fe6d57f2d 40-43
+  s_cfb50b510c25b7::t_2b60ccaa5bd662 25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "f06f6fe4f55bfe44c804f502895e37d5c57d6026",
+  "prompts": {},
+  "sessions": {
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
