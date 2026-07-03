@@ -1,0 +1,21 @@
+scripts/bridge-guard.test.mjs
+  s_cfb50b510c25b7::t_c75dc0bb8bd1ff 26-44
+scripts/bridge-guard.mjs
+  s_cfb50b510c25b7::t_7d7cd6c85b7a74 13,17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "093f20ad43f4081fa41ddfc59fba335c90e227c3",
+  "prompts": {},
+  "sessions": {
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
