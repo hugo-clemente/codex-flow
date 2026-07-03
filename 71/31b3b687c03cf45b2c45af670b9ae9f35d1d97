@@ -1,0 +1,39 @@
+scripts/bridge-guard.mjs
+  s_cfb50b510c25b7::t_4c9cf3c63dd1ed 1-93
+  s_cfb50b510c25b7::t_3b9030c9c2b246 94-96
+  s_08272a19150eb3::t_8e3877f264e2b6 97-118
+scripts/bridge-guard.test.mjs
+  s_cfb50b510c25b7::t_8e45180b62ef4b 1-16,18-21,23-32,34-43,45-51,53-68,70-86
+  s_cfb50b510c25b7::t_8e96a798d396dc 17
+  s_cfb50b510c25b7::t_c3042a1678466b 22
+  s_cfb50b510c25b7::t_14c8354e9241c9 33
+  s_cfb50b510c25b7::t_7c769fdb74b6e3 44
+  s_cfb50b510c25b7::t_8674b3014c469a 52
+  s_cfb50b510c25b7::t_292231ea58ad34 69
+hooks/hooks.json
+  s_cfb50b510c25b7::t_2caf22c7cca8a8 1-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "7131b3b687c03cf45b2c45af670b9ae9f35d1d97",
+  "prompts": {},
+  "sessions": {
+    "s_08272a19150eb3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "agent-a7362a4fc241c387d",
+        "model": "unknown"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    },
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
