@@ -1,0 +1,19 @@
+agents/adversarial-review.md
+  s_cfb50b510c25b7::t_b932abcc84bf6c 1-46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "9ac7f53d36084816a6f0f98bf3c35012d9a8c030",
+  "prompts": {},
+  "sessions": {
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
