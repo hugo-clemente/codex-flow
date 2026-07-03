@@ -1,0 +1,21 @@
+agents/implement-codex.md
+  s_cfb50b510c25b7::t_255b4fa1dd8f96 14
+  s_cfb50b510c25b7::t_904ea191415a28 1-2,4-13,15-43
+  s_cfb50b510c25b7::t_15b6caba5c70cf 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "71b4c3077296e8a2adb201466dfd752418cb56be",
+  "prompts": {},
+  "sessions": {
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
