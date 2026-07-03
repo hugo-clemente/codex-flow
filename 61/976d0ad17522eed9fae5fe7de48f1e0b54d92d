@@ -1,0 +1,24 @@
+agents/adversarial-review.md
+  s_cfb50b510c25b7::t_9bbfe8b504a30a 3
+  s_cfb50b510c25b7::t_72c0e4b8243d07 11-13,18,33-34,44,46
+agents/implement-cursor.md
+  s_cfb50b510c25b7::t_76382e32675310 11,13,15,17-23,26-27,33,35
+agents/implement-codex.md
+  s_cfb50b510c25b7::t_19675b4a8cbde4 11-12,16,18-23,35-37,47,49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "61976d0ad17522eed9fae5fe7de48f1e0b54d92d",
+  "prompts": {},
+  "sessions": {
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
