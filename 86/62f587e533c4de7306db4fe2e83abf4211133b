@@ -1,0 +1,21 @@
+commands/implement.md
+  s_cfb50b510c25b7::t_a749ad2083c8e4 1-12
+commands/adv-review.md
+  s_cfb50b510c25b7::t_af4d562c01f256 1-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "8662f587e533c4de7306db4fe2e83abf4211133b",
+  "prompts": {},
+  "sessions": {
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
