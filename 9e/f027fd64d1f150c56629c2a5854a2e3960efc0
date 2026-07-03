@@ -1,0 +1,23 @@
+skills/writing-plans-codex/SKILL.md
+  s_cfb50b510c25b7::t_b533a30e4ecc23 3,6,8-10
+skills/brainstorming-codex/SKILL.md
+  s_cfb50b510c25b7::t_32e0fb0c214ea8 3,6,8,10,12,14-16,18,20
+skills/execute-flow/SKILL.md
+  s_cfb50b510c25b7::t_01df91755c2e25 1-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "9ef027fd64d1f150c56629c2a5854a2e3960efc0",
+  "prompts": {},
+  "sessions": {
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
