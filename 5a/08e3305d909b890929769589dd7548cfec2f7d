@@ -1,0 +1,20 @@
+workflows/execute-plan.js
+  s_cfb50b510c25b7::t_8f48712e8e477b 45-47,49-52,55-61,74-78,81
+  s_cfb50b510c25b7::t_61591825775bc0 97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "5a08e3305d909b890929769589dd7548cfec2f7d",
+  "prompts": {},
+  "sessions": {
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
