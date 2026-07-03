@@ -1,0 +1,21 @@
+agents/research.md
+  s_cfb50b510c25b7::t_b374c5bb4f3cbc 1-12
+commands/fan-research.md
+  s_cfb50b510c25b7::t_b981050200491d 1-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "97c1d71506fe85f7f36b3c18f93db9364154a09d",
+  "prompts": {},
+  "sessions": {
+    "s_cfb50b510c25b7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c60ae862-e4fb-442f-b1c9-bf28db393d15",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
