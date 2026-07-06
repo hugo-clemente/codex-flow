@@ -53,9 +53,10 @@ and adds a final cross-model challenge.
 ## Seam 4 — final whole-branch challenge (after all tasks)
 
 Base SDD's final review stays (Claude code-reviewer on the most capable model). ADD a Codex
-challenge on the branch diff: **review lane** (`codex-flow:codex-lanes` §4) with `--base
-<merge-base>` and the code-challenge prompt. Two-model final review; you adjudicate fixes
-(review-only — no autofix on shipping code).
+challenge on the branch diff: **review lane** (`codex-flow:codex-lanes` §4) with the code-challenge
+prompt and `Target: the diff from <merge-base> to HEAD` (plain `codex exec` has no `--base` flag —
+name the range in the prompt; Codex runs `git diff` itself in the read-only sandbox). Two-model final
+review; you adjudicate fixes (review-only — no autofix on shipping code).
 
 ## Escalation
 

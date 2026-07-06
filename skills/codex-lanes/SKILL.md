@@ -50,25 +50,30 @@ off a Claude self-review as the Codex pass.
 ## 4. Review lane — invocation (xhigh, standard tier)
 
 xhigh reviews routinely run past 10 min, so run this in the **background** — never a plain foreground
-call (Claude Code's foreground Bash tool hard-caps at 600s). Redirect output to a file:
+call (Claude Code's foreground Bash tool hard-caps at 600s). `-o` isolates the final findings message;
+the full transcript (startup banner, reasoning, echoed tool output, token footer) goes to `$LOG` and is
+read only on failure — never fold it into context:
 
 ```bash
 _REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-OUT="$(mktemp)"
+OUT="$(mktemp)"; LOG="$(mktemp)"
 gtimeout 3600 codex exec -m gpt-5.5 \
   -c 'model_reasoning_effort="xhigh"' \
   -C "$_REPO_ROOT" -s read-only --skip-git-repo-check \
-  "<adversarial prompt — §7>  Target: <path or 'the working diff'>." \
-  < /dev/null > "$OUT" 2>&1
+  -o "$OUT" \
+  "<adversarial prompt — §6>  Target: <path or 'the working diff'>." \
+  < /dev/null > "$LOG" 2>&1
 ```
 
 Launch that with the Bash tool's `run_in_background: true`; when the process exits (the harness notifies
-you), read `$OUT` for the findings. Doc autofix (spec/plan): swap `-s read-only` → `-s workspace-write`
-and end the prompt with "…then rewrite the file in place, resolving the material findings."
+you), read **`$OUT`** for the findings. `$OUT` empty or the run errored → consult `$LOG`. Doc autofix
+(spec/plan): swap `-s read-only` → `-s workspace-write` and end the prompt with "…then rewrite the file
+in place, resolving the material findings." (`-o` then holds just the change summary — the value is the
+rewritten file.)
 
 ## 5. Implementer lane — invocation (low + fast, structured result)
 
-The result schema (§6) is not shipped on disk — write it to a throwaway file first:
+The result schema is not shipped on disk — write it to a throwaway file first:
 
 ```bash
 _REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
@@ -95,22 +100,12 @@ gtimeout 3600 codex exec -m gpt-5.5 \
 Bash tool's `run_in_background: true` and poll for the `-o` result file — see
 `sdd-with-codex-implementer`.
 
-## 6. Result schema (implementer) — content for §5's `$SCHEMA`
-
-```json
-{ "status": "completed|partial|failed",
-  "files_modified": ["..."],
-  "issues": ["..."],
-  "summary": "...",
-  "verification_summary": "..." }
-```
-
-## 7. Prompts
+## 6. Prompts
 
 - **Spec / plan adversarial review:** "You are an adversarial reviewer. Challenge every
   assumption in <file>. Surface unstated assumptions, missing edge cases, failure modes, and
   anything that contradicts this repo's conventions. Findings only, ranked by severity — no
   praise. [autofix variant: …then rewrite <file> in place resolving the material ones.]"
-- **Final code challenge (`--base`):** "Assume this diff is broken. Find the strongest reasons
+- **Final code challenge (branch diff):** "Assume this diff is broken. Find the strongest reasons
   it should not ship: auth, data loss, races, rollback, empty-state, schema drift. Ground every
   finding in a file:line. Findings only."
