@@ -1,0 +1,25 @@
+skills/sdd-with-codex-implementer/SKILL.md
+  s_0046c0cd8e4c92::t_b3e0dcbf793ede 56-59
+skills/codex-lanes/SKILL.md
+  s_0046c0cd8e4c92::t_ff2b855ab840f9 103
+  s_0046c0cd8e4c92::t_796d9c8d90f447 76
+  s_0046c0cd8e4c92::t_ed9169f7fbd696 109
+  s_0046c0cd8e4c92::t_6a120417b5658b 53-55,59,63,65,69-72
+  s_0046c0cd8e4c92::t_54914077ebbcc5 64
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "e2391392b9152aa366e8ca2945fe57058b7eacdb",
+  "prompts": {},
+  "sessions": {
+    "s_0046c0cd8e4c92": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fba9beba-93a1-440d-8394-4ba6175fe9d5",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
