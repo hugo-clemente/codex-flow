@@ -1,0 +1,39 @@
+skills/brainstorming-codex/SKILL.md
+  s_9d004d0ba08413::t_043bf4922938b8 27
+  s_9d004d0ba08413::t_2197f735911599 28
+skills/writing-plans-codex/SKILL.md
+  s_9d004d0ba08413::t_a0c63c08f5f9af 26
+  s_9d004d0ba08413::t_820080657040f3 27
+README.md
+  s_9d004d0ba08413::t_f9585f628424d8 41-42
+  s_9d004d0ba08413::t_c5acaf156746b7 43-44
+.claude-plugin/plugin.json
+  s_9d004d0ba08413::t_ca04181bff1ae3 3
+skills/codex-lanes/SKILL.md
+  s_9d004d0ba08413::t_f2022850a3e886 57-61
+  s_9d004d0ba08413::t_872cf8f07399b4 50-56,62-70
+skills/sdd-with-codex-implementer/SKILL.md
+  s_9d004d0ba08413::t_e7a3cc0929d265 33-34,38-41,43
+  s_9d004d0ba08413::t_491b806045afaa 72
+  s_9d004d0ba08413::t_3361e2f077a92f 54
+  s_9d004d0ba08413::t_03d941ea640679 35
+  s_9d004d0ba08413::t_9c352adeee6d09 42
+  s_9d004d0ba08413::t_5333d81f206515 70-71,73-74
+  s_9d004d0ba08413::t_ffb67d1ac88913 44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "2571acaad984fcb9d433389e13e157f40d569d54",
+  "prompts": {},
+  "sessions": {
+    "s_9d004d0ba08413": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6a2365bb-27b3-4251-9c30-cb5d90ccd3fe",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
