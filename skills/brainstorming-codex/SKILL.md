@@ -24,7 +24,8 @@ gate. Superpowers is called, never forked.
 1. **Codex availability** — check `codex-flow:codex-lanes` §1. `NO_CODEX` → run plain
    `superpowers:brainstorming`, tell the user once, stop here.
 2. **REQUIRED SUB-SKILL: superpowers:brainstorming** — run the full design dialogue and write +
-   commit the spec. When the spec is committed, **control returns HERE.** Do NOT follow
+   commit the spec. This is a high-taste, main-loop stage — the skill can't pin the model; if the
+   session runs on sonnet, suggest `/model opus` once before starting. When the spec is committed, **control returns HERE.** Do NOT follow
    brainstorming's built-in hand-off into writing-plans — this skill owns the hand-off (step 5).
    Use whatever spec path brainstorming chose; don't relocate it.
 3. **Seam 1 — Codex spec critique** — run the **review lane** (`codex-flow:codex-lanes` §4, doc

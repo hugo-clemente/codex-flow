@@ -38,4 +38,8 @@ Claude + Codex dual-model development, layered on [superpowers](https://github.c
 | implementer | `gpt-5.5` | low | on (1.5× speed, 2.5× credits) | workspace-write |
 | review | `gpt-5.5` | xhigh | off | read-only (doc autofix: workspace-write) |
 
+Claude lanes (Agent dispatches, see `codex-lanes` §3b): reviewers (per-task + final) `opus` ·
+user-facing implementer `sonnet` · escalated implementer `opus` · mechanical chores
+`sonnet`/low. Defaults, not limits — bad output gets rerun on a smarter model, no asking.
+
 Built and verified with `superpowers:writing-skills` (RED→GREEN→REFACTOR).

@@ -23,7 +23,8 @@ execution; you approve. Claude plans, Codex critiques, you gate. Chains into
 
 1. **Codex availability** — check `codex-flow:codex-lanes` §1. `NO_CODEX` → run plain
    `superpowers:writing-plans`, tell the user once, stop here.
-2. **REQUIRED SUB-SKILL: superpowers:writing-plans** — produce and save the plan. When the plan
+2. **REQUIRED SUB-SKILL: superpowers:writing-plans** — produce and save the plan. High-taste,
+   main-loop stage — if the session runs on sonnet, suggest `/model opus` once first. When the plan
    is saved, **control returns HERE.** Do NOT present writing-plans' execution-choice menu, and
    do NOT launch plain `superpowers:subagent-driven-development` — this skill owns the hand-off
    (step 5).

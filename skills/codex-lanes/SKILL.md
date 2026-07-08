@@ -47,6 +47,27 @@ off a Claude self-review as the Codex pass.
 \*doc autofix (rewriting a spec/plan in place) uses `workspace-write`; code-diff review stays `read-only`.
 `fast_mode` = 1.5× speed at 2.5× credits — implementer lane ONLY, never on reviews.
 
+## 3b. Claude lanes (Agent-tool dispatches)
+
+The Codex lanes above cover gpt-5.5; Claude subagents need a policy too — never let them
+silently inherit the session model:
+
+| lane                                  | model    | effort | why                                        |
+|---------------------------------------|----------|--------|--------------------------------------------|
+| per-task reviewer (two verdicts)      | `opus`   | —      | real review needs intelligence             |
+| final whole-branch code-reviewer      | `opus`   | —      | one shot, highest stakes                   |
+| taste-gated implementer (user-facing) | `sonnet` | —      | taste meets the user-facing bar            |
+| escalated implementer (Codex missed)  | `opus`   | —      | the miss was quality — go up in intelligence |
+| mechanical chores (briefs, ledger)    | `sonnet` | low    | clear-spec transcription                   |
+
+**Defaults, not limits.** Judge the output, not the price tag: if a cheaper lane's output misses
+the bar, rerun on a smarter model without asking. When axes conflict on anything that ships:
+intelligence > taste > cost. Cost is a tie-breaker only.
+
+Inside `Agent`/`Workflow` fan-outs the model param takes Claude models only — to reach gpt-5.5
+there, wrap it: a `sonnet`/low agent whose prompt says "compose a self-contained codex prompt,
+run the lane's `codex exec` via Bash, return the parsed `-o` JSON".
+
 ## 4. Review lane — invocation (xhigh, standard tier)
 
 xhigh reviews routinely run past 10 min, so run this in the **background** — never a plain foreground

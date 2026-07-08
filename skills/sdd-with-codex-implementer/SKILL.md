@@ -30,10 +30,17 @@ and adds a final cross-model challenge.
 
 | step | base SDD | here |
 |---|---|---|
-| implementer | Claude subagent | `codex exec` implementer lane (`codex-flow:codex-lanes` §5) |
-| task reviewer | Claude subagent, two verdicts | **unchanged** — still Claude, still both verdicts |
-| final review | Claude code-reviewer | Claude code-reviewer **+ Codex challenge (Seam 4)** |
+| implementer | Claude subagent | `codex exec` implementer lane (`codex-flow:codex-lanes` §5); **taste-gated tasks stay Claude** (see below) |
+| task reviewer | Claude subagent, two verdicts | **unchanged** flow — pin `model: opus` (`codex-flow:codex-lanes` §3b) |
+| final review | Claude code-reviewer | pin `model: opus` **+ Codex challenge (Seam 4)** |
 | everything else | — | unchanged |
+
+## Taste gate — route BEFORE dispatching
+
+gpt-5.5 transcribes fast but its taste is below the bar for anything user-facing. Per task,
+before step 1 below: does the task touch UI/UX, user-visible copy, or public API shape?
+→ Claude implementer subagent (base SDD dispatch, `model: sonnet`), skip the Codex lane for
+that task. Mechanical tasks (clear-spec implementation, migrations, plumbing) → Codex lane.
 
 ## Per-task implementer dispatch (replaces base SDD's implementer step)
 
@@ -44,7 +51,7 @@ and adds a final cross-model challenge.
 5. Read the result JSON; map `status` to base SDD's handling:
    - `completed` → proceed to review
    - `partial` → keep the diff, finish locally, then review
-   - `failed` / missing or malformed JSON → roll back to BASE, re-dispatch or escalate
+   - `failed` / missing or malformed JSON → roll back to BASE, follow **Escalation** below
 6. Codex's `status:completed` + `verification_summary` are the implementer's **self-report, not the
    review.** Continue to base SDD's task-reviewer (fresh Claude subagent, both verdicts, fed the
    `review-package` diff) exactly as normal, and re-run verification with the repo's pnpm commands
@@ -60,8 +67,11 @@ review; you adjudicate fixes (review-only — no autofix on shipping code).
 
 ## Escalation
 
-A task that needs more than `low` effort isn't clean transcription → tighten the brief so it is,
-OR hand THAT task to a Claude implementer subagent (base SDD). Keep Codex in the fast/low lane.
+Judge the output, not the price tag. A Codex task result that misses the bar (review rejects it,
+`failed`, or the diff is off-spec): tighten the brief and re-dispatch **once**. Still short →
+roll back to BASE and hand THAT task to a Claude implementer subagent (`model: opus`) —
+**without asking the user**. Escalating costs less than shipping mediocre work. Never crank
+Codex above `low`; a task needing more effort isn't clean transcription.
 
 ## Common Mistakes (from baseline testing)
 
