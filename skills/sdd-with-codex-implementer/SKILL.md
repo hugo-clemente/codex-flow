@@ -8,7 +8,7 @@ description: Use when executing an implementation plan task-by-task in the curre
 ## Overview
 
 The `superpowers:subagent-driven-development` loop with ONE substitution: each task's IMPLEMENTER
-is a `codex exec` call (fast/low lane), not a Claude subagent. Claude stays controller + reviewer.
+is a `codex exec` call (terra/medium lane), not a Claude subagent. Claude stays controller + reviewer.
 Everything else in SDD is unchanged.
 
 **REQUIRED SUB-SKILL: `codex-flow:codex-lanes`** — load it for the implementer-lane invocation.
@@ -37,7 +37,7 @@ and adds a final cross-model challenge.
 
 ## Taste gate — route BEFORE dispatching
 
-gpt-5.5 transcribes fast but its taste is below the bar for anything user-facing. Per task,
+terra transcribes fast but its taste is below the bar for anything user-facing. Per task,
 before step 1 below: does the task touch UI/UX, user-visible copy, or public API shape?
 → Claude implementer subagent (base SDD dispatch, `model: sonnet`), skip the Codex lane for
 that task. Mechanical tasks (clear-spec implementation, migrations, plumbing) → Codex lane.
