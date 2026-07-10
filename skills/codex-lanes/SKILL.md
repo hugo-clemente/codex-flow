@@ -1,6 +1,6 @@
 ---
 name: codex-lanes
-description: Reference recipe for invoking the Codex CLI (`codex exec`) from the codex-flow skills. Use when composing any codex exec call - it carries the mandatory guards, the implementer (fast/low) and review (xhigh) lanes, the result schema, and the adversarial prompts. Loaded by brainstorming-codex, writing-plans-codex, and sdd-with-codex-implementer.
+description: Reference recipe for invoking the Codex CLI (`codex exec`) from the codex-flow skills. Use when composing any codex exec call - it carries the mandatory guards, the implementer (terra/medium) and review (sol/xhigh) lanes, the result schema, and the adversarial prompts. Loaded by brainstorming-codex, writing-plans-codex, and sdd-with-codex-implementer.
 ---
 
 # Codex `codex exec` lanes (shared recipe)
@@ -26,7 +26,7 @@ off a Claude self-review as the Codex pass.
   - short prompt → positional arg + `< /dev/null`
   - long/structured prompt → `- < prompt.md` (the file IS stdin; do NOT also add `</dev/null`)
 - **`-C "$_REPO_ROOT"`** — resolve eagerly: `_REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"`.
-- **`-m gpt-5.5`** — pin the model.
+- **`-m` — pin the model per lane (§3).** The two lanes use different models; never rely on the config-default model.
 - **`--skip-git-repo-check`** — always pass it. No-op inside a git repo; lets codex run when the cwd / `-C` dir isn't a trusted git repo (e.g. reviewing a spec/plan doc under `~/Documents/claude-plans`, or running outside any repo). Without it codex errors "Not inside a trusted directory".
 - **effort is explicit.** `~/.codex/config.toml` defaults to `high`; an unset effort is neither
   the fast lane nor the xhigh lane. Always pass `-c 'model_reasoning_effort="…"'`.
@@ -39,17 +39,18 @@ off a Claude self-review as the Codex pass.
 
 ## 3. Lanes
 
-| lane            | when                          | model   | effort | fast_mode | sandbox          |
-|-----------------|-------------------------------|---------|--------|-----------|------------------|
-| **implementer** | writing code (SDD task)       | gpt-5.5 | low    | on        | workspace-write  |
-| **review**      | critiquing a spec/plan/diff   | gpt-5.5 | xhigh  | off       | read-only*       |
+| lane            | when                          | model         | effort | sandbox          |
+|-----------------|-------------------------------|---------------|--------|------------------|
+| **implementer** | writing code (SDD task)       | gpt-5.6-terra | medium | workspace-write  |
+| **review**      | critiquing a spec/plan/diff   | gpt-5.6-sol   | xhigh  | read-only*       |
 
 \*doc autofix (rewriting a spec/plan in place) uses `workspace-write`; code-diff review stays `read-only`.
-`fast_mode` = 1.5× speed at 2.5× credits — implementer lane ONLY, never on reviews.
+5.6 adds `max` and `ultra` above xhigh — explicit escalation for the review lane when xhigh
+comes back shallow; never the default.
 
 ## 3b. Claude lanes (Agent-tool dispatches)
 
-The Codex lanes above cover gpt-5.5; Claude subagents need a policy too — never let them
+The Codex lanes above cover gpt-5.6; Claude subagents need a policy too — never let them
 silently inherit the session model:
 
 | lane                                  | model    | effort | why                                        |
@@ -64,7 +65,7 @@ silently inherit the session model:
 the bar, rerun on a smarter model without asking. When axes conflict on anything that ships:
 intelligence > taste > cost. Cost is a tie-breaker only.
 
-Inside `Agent`/`Workflow` fan-outs the model param takes Claude models only — to reach gpt-5.5
+Inside `Agent`/`Workflow` fan-outs the model param takes Claude models only — to reach the Codex lanes
 there, wrap it: a `sonnet`/low agent whose prompt says "compose a self-contained codex prompt,
 run the lane's `codex exec` via Bash, return the parsed `-o` JSON".
 
@@ -78,7 +79,7 @@ read only on failure — never fold it into context:
 ```bash
 _REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 OUT="$(mktemp)"; LOG="$(mktemp)"
-gtimeout 3600 codex exec -m gpt-5.5 \
+gtimeout 3600 codex exec -m gpt-5.6-sol \
   -c 'model_reasoning_effort="xhigh"' \
   -C "$_REPO_ROOT" -s read-only --skip-git-repo-check \
   -o "$OUT" \
@@ -92,7 +93,7 @@ you), read **`$OUT`** for the findings. `$OUT` empty or the run errored → cons
 in place, resolving the material findings." (`-o` then holds just the change summary — the value is the
 rewritten file.)
 
-## 5. Implementer lane — invocation (low + fast, structured result)
+## 5. Implementer lane — invocation (terra medium, structured result)
 
 The result schema is not shipped on disk — write it to a throwaway file first:
 
@@ -108,9 +109,8 @@ SCHEMA="$(mktemp)"; cat > "$SCHEMA" <<'JSON'
     "summary":{"type":"string"},
     "verification_summary":{"type":"string"}}}
 JSON
-gtimeout 3600 codex exec -m gpt-5.5 \
-  -c 'model_reasoning_effort="low"' \
-  -c 'service_tier="fast"' -c 'features.fast_mode=true' \
+gtimeout 3600 codex exec -m gpt-5.6-terra \
+  -c 'model_reasoning_effort="medium"' \
   -C "$_REPO_ROOT" -s workspace-write --skip-git-repo-check \
   --output-schema "$SCHEMA" \
   -o "$(mktemp -u).json" \
