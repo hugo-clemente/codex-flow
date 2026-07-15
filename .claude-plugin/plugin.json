@@ -1,6 +1,6 @@
 {
   "name": "codex-flow",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Claude + Codex dual-model workflow. Layers on superpowers without forking it: Claude orchestrates and reviews; Codex (gpt-5.5) is the independent adversarial reviewer (xhigh) and the fast implementer (low effort + fast mode).",
   "author": { "name": "Hugo Clemente", "url": "https://github.com/hugo-clemente" },
   "homepage": "https://github.com/hugo-clemente/codex-flow",

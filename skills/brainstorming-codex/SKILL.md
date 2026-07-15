@@ -11,6 +11,10 @@ description: Use when starting a new feature or change you want taken through th
 before any planning; then you approve the hardened result. Claude designs, Codex critiques, you
 gate. Superpowers is called, never forked.
 
+**This human gate (step 4) is the ONLY approval in the entire Claude+Codex flow.** Once the
+design doc is approved here, planning (`writing-plans-codex`) and execution
+(`sdd-with-codex-implementer`) run autonomously to the end of development — no further gates.
+
 **REQUIRED SUB-SKILL: `codex-flow:codex-lanes`** — load it for the exact `codex exec` invocation
 (guards + review lane). Every Codex call below uses it.
 
@@ -31,8 +35,9 @@ gate. Superpowers is called, never forked.
 3. **Seam 1 — Codex spec critique** — run the **review lane** (`codex-flow:codex-lanes` §4, doc
    autofix, `workspace-write`) against the committed spec file. Codex critiques and revises the
    spec in place.
-4. **Human gate** — show the user the hardened spec plus a one-line summary of what Codex
-   changed; get approval. Changes requested → revise → re-gate.
+4. **Human gate (the only one)** — show the user the hardened spec plus a one-line summary of
+   what Codex changed; get approval. Changes requested → revise → re-gate. This is the sole
+   approval in the flow; after it, planning and execution are autonomous.
 5. **Hand off — REQUIRED SUB-SKILL: writing-plans-codex** (NOT plain
    `superpowers:writing-plans` — that path silently drops the plan-stage Codex review).
 

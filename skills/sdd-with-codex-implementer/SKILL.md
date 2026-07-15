@@ -63,7 +63,9 @@ Base SDD's final review stays (Claude code-reviewer on the most capable model). 
 challenge on the branch diff: **review lane** (`codex-flow:codex-lanes` §4) with the code-challenge
 prompt and `Target: the diff from <merge-base> to HEAD` (plain `codex exec` has no `--base` flag —
 name the range in the prompt; Codex runs `git diff` itself in the read-only sandbox). Two-model final
-review; you adjudicate fixes (review-only — no autofix on shipping code).
+review; **Claude adjudicates and applies fixes autonomously** — no human gate. Summarize what both
+reviews found and what you changed for the record, then proceed to
+`superpowers:finishing-a-development-branch`.
 
 ## Escalation
 

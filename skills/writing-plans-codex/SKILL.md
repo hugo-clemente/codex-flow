@@ -8,8 +8,10 @@ description: Use when turning an approved spec into an implementation plan in th
 ## Overview
 
 `superpowers:writing-plans` produces the plan; a different model (Codex) attacks it before
-execution; you approve. Claude plans, Codex critiques, you gate. Chains into
-`sdd-with-codex-implementer`. Superpowers is called, never forked.
+execution. Claude plans, Codex critiques — **no human gate here.** The only approval in the
+whole flow is the design doc back in `brainstorming-codex`; once that's approved, planning and
+execution run autonomously. Chains into `sdd-with-codex-implementer`. Superpowers is called,
+never forked.
 
 **REQUIRED SUB-SKILL: `codex-flow:codex-lanes`** — load it for the exact `codex exec` invocation
 (guards + review lane).
@@ -32,8 +34,8 @@ execution; you approve. Claude plans, Codex critiques, you gate. Chains into
    autofix, `workspace-write`) against the plan file: task ordering, missing rollback steps,
    untestable acceptance criteria, cross-package sequencing, tasks that span files unsafely.
    Codex critiques and revises the plan in place.
-4. **Human gate** — show the user the hardened plan + a one-line summary of what Codex changed;
-   get approval. Changes requested → revise → re-gate.
+4. **No gate — autonomous.** Note the hardened plan and a one-line summary of what Codex changed
+   for the record, then proceed. Do NOT pause for approval; the design doc was already gated.
 5. **Hand off — REQUIRED SUB-SKILL: sdd-with-codex-implementer** (NOT plain
    `superpowers:subagent-driven-development` — that path drops the Codex implementer lane and the
    final cross-model challenge).
@@ -41,7 +43,7 @@ execution; you approve. Claude plans, Codex critiques, you gate. Chains into
 ## Order contract
 
 The Codex critique fires AFTER the plan is saved and BEFORE execution. Never start executing
-tasks until the plan has cleared Seam 2 and the human gate.
+tasks until the plan has cleared Seam 2 — but Seam 2 is autonomous, no human gate.
 
 ## Common Mistakes (from baseline testing — every one was observed)
 
@@ -50,4 +52,5 @@ tasks until the plan has cleared Seam 2 and the human gate.
 | bare `codex exec "Read <plan>…"` — hangs, no xhigh, no repo root | use the review-lane recipe in `codex-flow:codex-lanes` verbatim |
 | picked writing-plans' "Subagent-Driven (recommended)" menu → plain SDD | chain to `sdd-with-codex-implementer` |
 | Claude "incorporated the feedback" itself | doc autofix: Codex revises the plan file in place (`workspace-write`) |
-| started executing before the plan critique | critique + gate first, then execute |
+| started executing before the plan critique | critique first, then execute — no gate |
+| paused for user approval of the plan | autonomous after the design-doc gate; don't re-gate |
