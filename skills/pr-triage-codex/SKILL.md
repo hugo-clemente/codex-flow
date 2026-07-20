@@ -1,6 +1,6 @@
 ---
 name: pr-triage-codex
-description: Use when a PR has review comments, bot findings, or failing CI and the goal is to get it fully green. Triages every open item with the user in batched AskUserQuestion calls, then Codex implements the accepted fixes and adversarially reviews the diff, then pushes and watches CI until green. Triggers - "triage my PR", "get CI green", "handle the review comments", "fix the PR feedback", "clear the CI blockers", a PR URL plus "make it pass". Optional arg `--fast` - all codex exec calls run in fast mode (codex-lanes §3).
+description: Use when a PR has review comments, bot findings, or failing CI and the goal is to get it fully green. Triggers - "triage my PR", "get CI green", "handle the review comments", "fix the PR feedback", "clear the CI blockers", a PR URL plus "make it pass". Optional arg `--fast` - all codex exec calls run in fast mode (codex-lanes §3).
 ---
 
 # PR Triage (Codex-augmented)
@@ -8,7 +8,8 @@ description: Use when a PR has review comments, bot findings, or failing CI and 
 ## Overview
 
 One pass from red PR to green PR: gather every open item (unresolved review threads, bot
-findings, failing checks) → triage them with the user in a few batched AskUserQuestion calls →
+findings, failing checks) → post the triage brief (table + ELI5 per item) → triage them with
+the user in a few batched AskUserQuestion calls →
 Codex implements the accepted fixes → Codex adversarially reviews the diff → reply/resolve
 threads, push, watch CI → loop on new failures until green or blocked.
 
@@ -37,16 +38,22 @@ lane (§4) challenges the diff. `NO_CODEX` (§1) → Claude subagents take both 
   Humans and bots (CodeRabbit, Copilot, linters) both count — one triage list.
 - Failing checks: `gh pr checks <pr#>` → for each failure `gh run view <run-id> --log-failed`
   (read enough log to name the actual error, not the step name).
-- Build ONE numbered triage list: `#, source (reviewer/bot/CI), file:line or check name,
-  one-line gist, your read (legit / disputed / flaky / needs-decision)`. Show it to the user
-  as a table before asking anything — the questions reference these numbers.
-- Under the table, explain each item **ELI5**: 2-3 plain sentences per item — what the comment
-  or failure actually means, why it matters (or doesn't), and what fixing it would involve.
-  No jargon from the log, no reviewer shorthand. The user decides every item's fate in step 2;
-  they can only decide well if they understood the item without opening the PR. The question
-  text then stays short — it references the explanation, not repeats it.
+- Step 1 ends by POSTING the **triage brief** — a normal text message in the chat, not text
+  inside any tool call. The brief has two parts, both required:
+  1. Numbered table: `#, source (reviewer/bot/CI), file:line or check name, one-line gist,
+     your read (legit / disputed / flaky / needs-decision)`.
+  2. Under the table, per item, an **ELI5**: 2-3 plain sentences — what the comment or failure
+     actually means, why it matters (or doesn't), and what fixing it would involve. No jargon
+     from the log, no reviewer shorthand.
+  The user decides every item's fate in step 2; they can only decide well if they understood
+  each item without opening the PR.
 
 ### 2. Triage — batched AskUserQuestion
+
+**Gate: the triage brief must already be posted as its own message before the first
+AskUserQuestion call.** No brief on screen → post it now, then ask. Question text stays short —
+it references items by their brief `#`, it never carries the explanation (option/question text
+truncates; the brief is where the user reads).
 
 The whole point is killing ping-pong: **batch up to 4 items per AskUserQuestion call**, never
 one question per message. Each item is one question — header = `#N <short label>`, question text
@@ -100,6 +107,7 @@ foreground Bash cap is 600s and CI is slower). On exit:
 | Baseline behavior | Do instead |
 |---|---|
 | one AskUserQuestion per comment — 15 round-trips | batch 4 per call; auto-fix obvious CI items in one confirmation |
+| questions fired straight after gathering — user decides blind | post the triage brief (table + ELI5) as its own message first; questions only reference its #s |
 | REST comment list treated as triage list — resolution state invisible | GraphQL `reviewThreads` with `isResolved==false` |
 | resolved threads without replying | reply with the sha, THEN resolve; never resolve won't-fix |
 | foreground `gh pr checks --watch` — killed at 600s | background launch, read result on exit |
