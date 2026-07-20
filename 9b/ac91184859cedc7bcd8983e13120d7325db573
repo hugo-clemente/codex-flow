@@ -1,0 +1,37 @@
+skills/sdd-with-codex-implementer/SKILL.md
+  s_1ec3da11492ead::t_75aaed7586ef2b 3
+  s_1ec3da11492ead::t_3fff0558c9e49e 50
+README.md
+  s_1ec3da11492ead::t_7469c756dbf6a3 44
+  s_1ec3da11492ead::t_399eccff69329e 41-43
+.claude-plugin/plugin.json
+  s_1ec3da11492ead::t_c9586c35e8cf9e 3
+skills/codex-lanes/SKILL.md
+  s_1ec3da11492ead::t_436588cdaf02ed 51-55
+  s_1ec3da11492ead::t_64aa61f34cb957 56
+  s_1ec3da11492ead::t_4daaab4413c9e3 96
+  s_1ec3da11492ead::t_ffaeb33170b82a 132-133
+  s_1ec3da11492ead::t_1ec50cd7a9df9e 131
+skills/brainstorming-codex/SKILL.md
+  s_1ec3da11492ead::t_eb93a844964825 43
+  s_1ec3da11492ead::t_e778411377de67 3
+skills/writing-plans-codex/SKILL.md
+  s_1ec3da11492ead::t_4779c9b8d08997 3
+  s_1ec3da11492ead::t_800f99714da576 41-42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "9bac91184859cedc7bcd8983e13120d7325db573",
+  "prompts": {},
+  "sessions": {
+    "s_1ec3da11492ead": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3968e46d-bb62-4f6c-a226-230611851fe6",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}

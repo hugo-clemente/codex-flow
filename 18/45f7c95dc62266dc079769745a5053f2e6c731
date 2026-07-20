@@ -1,0 +1,19 @@
+.gitignore
+  s_2076efff22227d::t_258fdc2d74cb28 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.11",
+  "base_commit_sha": "1845f7c95dc62266dc079769745a5053f2e6c731",
+  "prompts": {},
+  "sessions": {
+    "s_2076efff22227d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3ff57442-57b1-4812-9d7e-b85b50e5ab13",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}

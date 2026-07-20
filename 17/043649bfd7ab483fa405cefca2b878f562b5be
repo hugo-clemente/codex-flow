@@ -1,0 +1,29 @@
+skills/sdd-with-codex-implementer/SKILL.md
+  s_2076efff22227d::t_00f57869089933 40
+  s_2076efff22227d::t_6eacec518deed1 11
+.claude-plugin/plugin.json
+  s_2076efff22227d::t_541e7343633772 9
+  s_2076efff22227d::t_cfa5d8193ac838 3-4
+README.md
+  s_2076efff22227d::t_8f434a94907bb9 26
+  s_2076efff22227d::t_39e6969fc6489b 25
+  s_2076efff22227d::t_d928eec2f8bb1e 3
+  s_2076efff22227d::t_d0c7cd6ca0224d 36-39
+  s_2076efff22227d::t_b4145c935a37ef 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.11",
+  "base_commit_sha": "17043649bfd7ab483fa405cefca2b878f562b5be",
+  "prompts": {},
+  "sessions": {
+    "s_2076efff22227d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3ff57442-57b1-4812-9d7e-b85b50e5ab13",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
