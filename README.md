@@ -23,7 +23,8 @@ Claude + Codex dual-model development, layered on [superpowers](https://github.c
 | `brainstorming-codex` | `superpowers:brainstorming` + Codex adversarial **spec** critique → chains to `writing-plans-codex` |
 | `writing-plans-codex` | `superpowers:writing-plans` + Codex adversarial **plan** critique (autofix) → chains to `sdd-with-codex-implementer` |
 | `sdd-with-codex-implementer` | the superpowers SDD loop with Codex as the per-task **implementer** (terra/medium) + Claude reviewer kept + a final Codex **challenge** on the branch diff |
-| `codex-lanes` | shared reference: the exact `codex exec` invocation — guards, terra/sol lanes, result schema, prompts. Loaded by the other three. |
+| `pr-triage-codex` | red PR → green: triage review comments + CI blockers with the user (batched AskUserQuestion, ELI5 per item), Codex implements the fixes + challenges the diff, push, watch CI until green |
+| `codex-lanes` | shared reference: the exact `codex exec` invocation — guards, terra/sol lanes, result schema, prompts. Loaded by the others. |
 
 ## Kick off
 
