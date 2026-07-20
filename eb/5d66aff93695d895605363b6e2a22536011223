@@ -1,0 +1,22 @@
+README.md
+  s_1ec3da11492ead::t_c1d7c3700ccf70 26-27
+skills/pr-triage-codex/SKILL.md
+  s_1ec3da11492ead::t_9e7b183a208597 43-47
+  s_1ec3da11492ead::t_5a13244439cb0b 1-42,48-108
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "eb5d66aff93695d895605363b6e2a22536011223",
+  "prompts": {},
+  "sessions": {
+    "s_1ec3da11492ead": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3968e46d-bb62-4f6c-a226-230611851fe6",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
