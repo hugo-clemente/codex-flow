@@ -38,6 +38,10 @@ Claude + Codex dual-model development, layered on [superpowers](https://github.c
 | implementer | `gpt-5.6-terra` | medium | workspace-write |
 | review | `gpt-5.6-sol` | xhigh (escalate max/ultra) | read-only (doc autofix: workspace-write) |
 
+Fast mode: pass `--fast` to any of the three flow skills → every `codex exec` call in the whole
+flow (reviews included) runs with `service_tier="fast"` + `features.fast_mode=true`
+(~1.5× speed, ~2.5× credits). Sticky across hand-offs, opt-in.
+
 Claude lanes (Agent dispatches, see `codex-lanes` §3b): reviewers (per-task + final) `opus` ·
 user-facing implementer `sonnet` · escalated implementer `opus` · mechanical chores
 `sonnet`/low. Defaults, not limits — bad output gets rerun on a smarter model, no asking.

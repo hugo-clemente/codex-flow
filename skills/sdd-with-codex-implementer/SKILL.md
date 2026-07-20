@@ -1,6 +1,6 @@
 ---
 name: sdd-with-codex-implementer
-description: Use when executing an implementation plan task-by-task in the current session with Codex writing the code. Triggers - invoked by writing-plans-codex, "run the plan with codex", "sdd with codex implementer", "execute the plan, codex implements", or when an approved plan is ready and Codex should do the per-task implementation while Claude reviews.
+description: Use when executing an implementation plan task-by-task in the current session with Codex writing the code. Triggers - invoked by writing-plans-codex, "run the plan with codex", "sdd with codex implementer", "execute the plan, codex implements", or when an approved plan is ready and Codex should do the per-task implementation while Claude reviews. Optional arg `--fast` - all codex exec calls (implementer + final challenge) run in Codex fast mode (codex-lanes §3).
 ---
 
 # Subagent-Driven Development — Codex Implementer
@@ -47,7 +47,7 @@ that task. Mechanical tasks (clear-spec implementation, migrations, plumbing) �
 1. Record BASE: `git rev-parse HEAD`.
 2. `scripts/task-brief PLAN N` → brief file (base SDD).
 3. Build the Codex prompt file from the brief — XML sections `<task><files><patterns><approach><constraints><testing><verify><output_contract>`. In `<verify>`, give Codex **THIS repo's real commands** — `pnpm --filter @roundtable/<pkg> typecheck` and `pnpm --filter @roundtable/<pkg> test:no-migrate --run <files>` — never a generic `bun test`/`npm test` (baseline Codex guessed `bun test` in a pnpm/vitest repo).
-4. Run the **implementer lane** (`codex-flow:codex-lanes` §5): background launch (`run_in_background: true`) + poll the `-o` result file.
+4. Run the **implementer lane** (`codex-flow:codex-lanes` §5): background launch (`run_in_background: true`) + poll the `-o` result file. Invoked with `--fast` (or user asked for fast mode) → add the fast-mode flags (§3) to every `codex exec` call, Seam 4 included.
 5. Read the result JSON; map `status` to base SDD's handling:
    - `completed` → proceed to review
    - `partial` → keep the diff, finish locally, then review

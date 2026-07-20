@@ -1,6 +1,6 @@
 ---
 name: writing-plans-codex
-description: Use when turning an approved spec into an implementation plan in the Claude+Codex flow. Triggers - invoked by brainstorming-codex, "write the plan with codex", "plan with codex review", or when a spec is approved and you want Codex to adversarially review the plan before execution.
+description: Use when turning an approved spec into an implementation plan in the Claude+Codex flow. Triggers - invoked by brainstorming-codex, "write the plan with codex", "plan with codex review", or when a spec is approved and you want Codex to adversarially review the plan before execution. Optional arg `--fast` - all codex exec calls run in fast mode (codex-lanes §3), carried into the sdd hand-off.
 ---
 
 # Writing Plans (Codex-augmented)
@@ -38,7 +38,8 @@ never forked.
    for the record, then proceed. Do NOT pause for approval; the design doc was already gated.
 5. **Hand off — REQUIRED SUB-SKILL: sdd-with-codex-implementer** (NOT plain
    `superpowers:subagent-driven-development` — that path drops the Codex implementer lane and the
-   final cross-model challenge).
+   final cross-model challenge). Invoked with `--fast` → pass it along; fast mode is flow-wide
+   (codex-lanes §3).
 
 ## Order contract
 

@@ -48,6 +48,12 @@ off a Claude self-review as the Codex pass.
 5.6 adds `max` and `ultra` above xhigh — explicit escalation for the review lane when xhigh
 comes back shallow; never the default.
 
+**Fast mode (opt-in, flow-wide).** Any codex-flow skill invoked with `--fast` (or the user asks
+for fast mode) → add `-c 'service_tier="fast"' -c 'features.fast_mode=true'` to **every**
+`codex exec` call, both lanes, reviews included. ~1.5× speed at ~2.5× credits. The flag is
+sticky: carry it through every hand-off (brainstorming → writing-plans → sdd) until the flow
+ends or the user turns it off. Never the default.
+
 ## 3b. Claude lanes (Agent-tool dispatches)
 
 The Codex lanes above cover gpt-5.6; Claude subagents need a policy too — never let them
@@ -87,6 +93,7 @@ gtimeout 3600 codex exec -m gpt-5.6-sol \
   < /dev/null > "$LOG" 2>&1
 ```
 
+Fast mode (§3): insert `-c 'service_tier="fast"' -c 'features.fast_mode=true'` after the effort line.
 Launch that with the Bash tool's `run_in_background: true`; when the process exits (the harness notifies
 you), read **`$OUT`** for the findings. `$OUT` empty or the run errored → consult `$LOG`. Doc autofix
 (spec/plan): swap `-s read-only` → `-s workspace-write` and end the prompt with "…then rewrite the file
@@ -120,6 +127,9 @@ gtimeout 3600 codex exec -m gpt-5.6-terra \
 (`- < "$PROMPT_FILE"` feeds the prompt via stdin, so no `< /dev/null` here.) Launch with the
 Bash tool's `run_in_background: true` and poll for the `-o` result file — see
 `sdd-with-codex-implementer`.
+
+Fast mode (§3): insert `-c 'service_tier="fast"' -c 'features.fast_mode=true'` after the
+effort line.
 
 ## 6. Prompts
 

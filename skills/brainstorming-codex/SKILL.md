@@ -1,6 +1,6 @@
 ---
 name: brainstorming-codex
-description: Use when starting a new feature or change you want taken through the Claude+Codex flow, beginning with brainstorming. Triggers - "brainstorm with codex", "use our codex flow", "dual-model brainstorm", "codex flow", or any feature kickoff where Codex should independently review the spec before planning.
+description: Use when starting a new feature or change you want taken through the Claude+Codex flow, beginning with brainstorming. Triggers - "brainstorm with codex", "use our codex flow", "dual-model brainstorm", "codex flow", or any feature kickoff where Codex should independently review the spec before planning. Optional arg `--fast` - all codex exec calls in the whole flow run in fast mode (codex-lanes §3), carried through hand-offs.
 ---
 
 # Brainstorming (Codex-augmented)
@@ -40,6 +40,7 @@ design doc is approved here, planning (`writing-plans-codex`) and execution
    approval in the flow; after it, planning and execution are autonomous.
 5. **Hand off — REQUIRED SUB-SKILL: writing-plans-codex** (NOT plain
    `superpowers:writing-plans` — that path silently drops the plan-stage Codex review).
+   Invoked with `--fast` → pass it along; fast mode is flow-wide (codex-lanes §3).
 
 ## Order contract
 
