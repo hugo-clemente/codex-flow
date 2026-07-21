@@ -30,6 +30,11 @@ off a Claude self-review as the Codex pass.
 - **`--skip-git-repo-check`** — always pass it. No-op inside a git repo; lets codex run when the cwd / `-C` dir isn't a trusted git repo (e.g. reviewing a spec/plan doc under `~/Documents/claude-plans`, or running outside any repo). Without it codex errors "Not inside a trusted directory".
 - **effort is explicit.** `~/.codex/config.toml` defaults to `high`; an unset effort is neither
   the fast lane nor the xhigh lane. Always pass `-c 'model_reasoning_effort="…"'`.
+- **kill the desktop app's MCP riders.** The ChatGPT desktop app writes a `node_repl` MCP server
+  (its browser/computer-use bridge) into `~/.codex/config.toml`, so every headless `codex exec`
+  loads it too — pure startup cost (120s timeout budget) and a tool Codex sometimes wanders into
+  mid-task. Always pass `-c 'mcp_servers.node_repl.enabled=false'`. Config stays untouched, so
+  the desktop app keeps its browser features.
 - **bound the run.** Prefix `gtimeout 3600` (macOS: `brew install coreutils`; Linux: `timeout 3600`) —
   a generous hang-guard, not a work limit. Omit only if neither binary exists.
 - **long runs go in the background.** Claude Code's foreground Bash tool hard-caps at 600s (10 min); xhigh
@@ -87,6 +92,7 @@ _REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 OUT="$(mktemp)"; LOG="$(mktemp)"
 gtimeout 3600 codex exec -m gpt-5.6-sol \
   -c 'model_reasoning_effort="xhigh"' \
+  -c 'mcp_servers.node_repl.enabled=false' \
   -C "$_REPO_ROOT" -s read-only --skip-git-repo-check \
   -o "$OUT" \
   "<adversarial prompt — §6>  Target: <path or 'the working diff'>." \
@@ -118,6 +124,7 @@ SCHEMA="$(mktemp)"; cat > "$SCHEMA" <<'JSON'
 JSON
 gtimeout 3600 codex exec -m gpt-5.6-terra \
   -c 'model_reasoning_effort="low"' \
+  -c 'mcp_servers.node_repl.enabled=false' \
   -C "$_REPO_ROOT" -s workspace-write --skip-git-repo-check \
   --output-schema "$SCHEMA" \
   -o "$(mktemp -u).json" \
