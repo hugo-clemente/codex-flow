@@ -22,7 +22,7 @@ Claude + Codex dual-model development, layered on [superpowers](https://github.c
 |---|---|
 | `brainstorming-codex` | `superpowers:brainstorming` + Codex adversarial **spec** critique → chains to `writing-plans-codex` |
 | `writing-plans-codex` | `superpowers:writing-plans` + Codex adversarial **plan** critique (autofix) → chains to `sdd-with-codex-implementer` |
-| `sdd-with-codex-implementer` | the superpowers SDD loop with Codex as the per-task **implementer** (terra/medium) + Claude reviewer kept + a final Codex **challenge** on the branch diff |
+| `sdd-with-codex-implementer` | the superpowers SDD loop with Codex as the per-task **implementer** (terra/low) + Claude reviewer kept + a final Codex **challenge** on the branch diff |
 | `pr-triage-codex` | red PR → green: triage review comments + CI blockers with the user (batched AskUserQuestion, ELI5 per item), Codex implements the fixes + challenges the diff, push, watch CI until green |
 | `codex-lanes` | shared reference: the exact `codex exec` invocation — guards, terra/sol lanes, result schema, prompts. Loaded by the others. |
 
@@ -36,7 +36,7 @@ Claude + Codex dual-model development, layered on [superpowers](https://github.c
 
 | lane | model | effort | sandbox |
 |---|---|---|---|
-| implementer | `gpt-5.6-terra` | medium | workspace-write |
+| implementer | `gpt-5.6-terra` | low | workspace-write |
 | review | `gpt-5.6-sol` | xhigh (escalate max/ultra) | read-only (doc autofix: workspace-write) |
 
 Fast mode: pass `--fast` to any of the three flow skills → every `codex exec` call in the whole

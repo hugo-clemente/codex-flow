@@ -8,7 +8,7 @@ description: Use when executing an implementation plan task-by-task in the curre
 ## Overview
 
 The `superpowers:subagent-driven-development` loop with ONE substitution: each task's IMPLEMENTER
-is a `codex exec` call (terra/medium lane), not a Claude subagent. Claude stays controller + reviewer.
+is a `codex exec` call (terra/low lane), not a Claude subagent. Claude stays controller + reviewer.
 Everything else in SDD is unchanged.
 
 **REQUIRED SUB-SKILL: `codex-flow:codex-lanes`** — load it for the implementer-lane invocation.
@@ -46,7 +46,10 @@ that task. Mechanical tasks (clear-spec implementation, migrations, plumbing) �
 
 1. Record BASE: `git rev-parse HEAD`.
 2. `scripts/task-brief PLAN N` → brief file (base SDD).
-3. Build the Codex prompt file from the brief — XML sections `<task><files><patterns><approach><constraints><testing><verify><output_contract>`. In `<verify>`, give Codex **THIS repo's real commands** — `pnpm --filter @roundtable/<pkg> typecheck` and `pnpm --filter @roundtable/<pkg> test:no-migrate --run <files>` — never a generic `bun test`/`npm test` (baseline Codex guessed `bun test` in a pnpm/vitest repo).
+3. Build the Codex prompt file: START with the fixed preamble from this skill's
+   `codex-implementer-prompt.md` (verbatim — it carries the working rules, the no-questions
+   status mapping, and the self-review pass), THEN the XML sections from the brief —
+   `<task><files><patterns><approach><constraints><testing><verify><output_contract>`. In `<verify>`, give Codex **THIS repo's real commands** — `pnpm --filter @roundtable/<pkg> typecheck` and `pnpm --filter @roundtable/<pkg> test:no-migrate --run <files>` — never a generic `bun test`/`npm test` (baseline Codex guessed `bun test` in a pnpm/vitest repo).
 4. Run the **implementer lane** (`codex-flow:codex-lanes` §5): background launch (`run_in_background: true`) + poll the `-o` result file. Invoked with `--fast` (or user asked for fast mode) → add the fast-mode flags (§3) to every `codex exec` call, Seam 4 included.
 5. Read the result JSON; map `status` to base SDD's handling:
    - `completed` → proceed to review

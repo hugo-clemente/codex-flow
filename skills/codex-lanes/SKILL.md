@@ -1,6 +1,6 @@
 ---
 name: codex-lanes
-description: Reference recipe for invoking the Codex CLI (`codex exec`) from the codex-flow skills. Use when composing any codex exec call - it carries the mandatory guards, the implementer (terra/medium) and review (sol/xhigh) lanes, the result schema, and the adversarial prompts. Loaded by brainstorming-codex, writing-plans-codex, and sdd-with-codex-implementer.
+description: Reference recipe for invoking the Codex CLI (`codex exec`) from the codex-flow skills. Use when composing any codex exec call - it carries the mandatory guards, the implementer (terra/low) and review (sol/xhigh) lanes, the result schema, and the adversarial prompts. Loaded by brainstorming-codex, writing-plans-codex, and sdd-with-codex-implementer.
 ---
 
 # Codex `codex exec` lanes (shared recipe)
@@ -41,7 +41,7 @@ off a Claude self-review as the Codex pass.
 
 | lane            | when                          | model         | effort | sandbox          |
 |-----------------|-------------------------------|---------------|--------|------------------|
-| **implementer** | writing code (SDD task)       | gpt-5.6-terra | medium | workspace-write  |
+| **implementer** | writing code (SDD task)       | gpt-5.6-terra | low    | workspace-write  |
 | **review**      | critiquing a spec/plan/diff   | gpt-5.6-sol   | xhigh  | read-only*       |
 
 \*doc autofix (rewriting a spec/plan in place) uses `workspace-write`; code-diff review stays `read-only`.
@@ -100,7 +100,7 @@ you), read **`$OUT`** for the findings. `$OUT` empty or the run errored → cons
 in place, resolving the material findings." (`-o` then holds just the change summary — the value is the
 rewritten file.)
 
-## 5. Implementer lane — invocation (terra medium, structured result)
+## 5. Implementer lane — invocation (terra low, structured result)
 
 The result schema is not shipped on disk — write it to a throwaway file first:
 
@@ -117,7 +117,7 @@ SCHEMA="$(mktemp)"; cat > "$SCHEMA" <<'JSON'
     "verification_summary":{"type":"string"}}}
 JSON
 gtimeout 3600 codex exec -m gpt-5.6-terra \
-  -c 'model_reasoning_effort="medium"' \
+  -c 'model_reasoning_effort="low"' \
   -C "$_REPO_ROOT" -s workspace-write --skip-git-repo-check \
   --output-schema "$SCHEMA" \
   -o "$(mktemp -u).json" \
