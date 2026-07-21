@@ -1,0 +1,23 @@
+skills/codex-lanes/SKILL.md
+  s_98752c1eae414b::t_467dfdf741bd29 127
+  s_98752c1eae414b::t_148888a1cfa929 33-37
+  s_98752c1eae414b::t_5db2adbc3d36f6 95
+.claude-plugin/plugin.json
+  s_98752c1eae414b::t_cb15b24d754e28 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "710522b95f5425156872284c315c126d591276d5",
+  "prompts": {},
+  "sessions": {
+    "s_98752c1eae414b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eed962c7-c40d-498b-9525-8ff69f62e343",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
