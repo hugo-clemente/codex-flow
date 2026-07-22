@@ -32,11 +32,11 @@ design doc is approved here, planning (`writing-plans-codex`) and execution
    session runs on sonnet, suggest `/model opus` once before starting. When the spec is committed, **control returns HERE.** Do NOT follow
    brainstorming's built-in hand-off into writing-plans — this skill owns the hand-off (step 5).
    Use whatever spec path brainstorming chose; don't relocate it.
-3. **Seam 1 — Codex spec critique** — run the **review lane** (`codex-flow:codex-lanes` §4, doc
-   autofix, `workspace-write`) against the committed spec file. Codex critiques and revises the
-   spec in place.
-4. **Human gate (the only one)** — show the user the hardened spec plus a one-line summary of
-   what Codex changed; get approval. Changes requested → revise → re-gate. This is the sole
+3. **Seam 1 — Codex spec critique** — run the **review lane** (`codex-flow:codex-lanes` §4)
+   against the committed spec file. Codex returns findings JSON; adjudicate each finding
+   (accept/reject + one-line reason) and apply the accepted fixes to the spec yourself.
+4. **Human gate (the only one)** — show the user the hardened spec plus the adjudication
+   summary (what Codex found, what you accepted/rejected and why); get approval. Changes requested → revise → re-gate. This is the sole
    approval in the flow; after it, planning and execution are autonomous.
 5. **Hand off — REQUIRED SUB-SKILL: writing-plans-codex** (NOT plain
    `superpowers:writing-plans` — that path silently drops the plan-stage Codex review).

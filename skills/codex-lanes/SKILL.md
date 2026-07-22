@@ -49,7 +49,8 @@ off a Claude self-review as the Codex pass.
 | **implementer** | writing code (SDD task)       | gpt-5.6-terra | low    | workspace-write  |
 | **review**      | critiquing a spec/plan/diff   | gpt-5.6-sol   | xhigh  | read-only*       |
 
-\*doc autofix (rewriting a spec/plan in place) uses `workspace-write`; code-diff review stays `read-only`.
+\*the review lane NEVER edits the artifact — it returns findings JSON (§4) and Claude
+adjudicates + applies; Codex holds the pen only in the implementer lane.
 5.6 adds `max` and `ultra` above xhigh — explicit escalation for the review lane when xhigh
 comes back shallow; never the default.
 
@@ -80,31 +81,51 @@ Inside `Agent`/`Workflow` fan-outs the model param takes Claude models only — 
 there, wrap it: a `sonnet`/low agent whose prompt says "compose a self-contained codex prompt,
 run the lane's `codex exec` via Bash, return the parsed `-o` JSON".
 
-## 4. Review lane — invocation (xhigh, standard tier)
+## 4. Review lane — invocation (xhigh, structured findings)
+
+The review lane never edits the artifact. Codex returns findings as JSON (schema below); Claude
+**adjudicates** — accept or reject each finding with a one-line reason — and applies the accepted
+fixes itself. This holds for specs, plans, and code diffs alike.
 
 xhigh reviews routinely run past 10 min, so run this in the **background** — never a plain foreground
-call (Claude Code's foreground Bash tool hard-caps at 600s). `-o` isolates the final findings message;
+call (Claude Code's foreground Bash tool hard-caps at 600s). `-o` isolates the findings JSON;
 the full transcript (startup banner, reasoning, echoed tool output, token footer) goes to `$LOG` and is
 read only on failure — never fold it into context:
 
 ```bash
 _REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+SCHEMA="$(mktemp)"; cat > "$SCHEMA" <<'JSON'
+{ "type":"object","additionalProperties":false,"required":["verdict","findings"],
+  "properties":{
+    "verdict":{"enum":["approve","needs_changes"]},
+    "findings":{"type":"array","items":{"type":"object","additionalProperties":false,
+      "required":["severity","location","claim","why","suggested_fix"],
+      "properties":{
+        "severity":{"enum":["blocker","major","minor"]},
+        "location":{"type":"string"},
+        "claim":{"type":"string"},
+        "why":{"type":"string"},
+        "suggested_fix":{"type":"string"}}}}}}
+JSON
 OUT="$(mktemp)"; LOG="$(mktemp)"
 gtimeout 3600 codex exec -m gpt-5.6-sol \
   -c 'model_reasoning_effort="xhigh"' \
   -c 'mcp_servers.node_repl.enabled=false' \
   -C "$_REPO_ROOT" -s read-only --skip-git-repo-check \
+  --output-schema "$SCHEMA" \
   -o "$OUT" \
   "<adversarial prompt — §6>  Target: <path or 'the working diff'>." \
   < /dev/null > "$LOG" 2>&1
 ```
 
 Fast mode (§3): insert `-c 'service_tier="fast"' -c 'features.fast_mode=true'` after the effort line.
-Launch that with the Bash tool's `run_in_background: true`; when the process exits (the harness notifies
-you), read **`$OUT`** for the findings. `$OUT` empty or the run errored → consult `$LOG`. Doc autofix
-(spec/plan): swap `-s read-only` → `-s workspace-write` and end the prompt with "…then rewrite the file
-in place, resolving the material findings." (`-o` then holds just the change summary — the value is the
-rewritten file.)
+Launch with the Bash tool's `run_in_background: true`; when the process exits (the harness notifies
+you), read **`$OUT`** for the findings JSON. `$OUT` empty or malformed → consult `$LOG`.
+
+**Adjudication (Claude, after every review call):** for each finding — accept or reject with a
+one-line reason; apply accepted fixes to the artifact yourself; record the adjudication
+(accepted/rejected + why) in the stage's summary. Never apply a finding unexamined, never let
+Codex rewrite the artifact.
 
 ## 5. Implementer lane — invocation (terra low, structured result)
 
@@ -143,7 +164,7 @@ effort line.
 - **Spec / plan adversarial review:** "You are an adversarial reviewer. Challenge every
   assumption in <file>. Surface unstated assumptions, missing edge cases, failure modes, and
   anything that contradicts this repo's conventions. Findings only, ranked by severity — no
-  praise. [autofix variant: …then rewrite <file> in place resolving the material ones.]"
+  praise. `location` = the section heading (or file:line) each finding anchors to."
 - **Final code challenge (branch diff):** "Assume this diff is broken. Find the strongest reasons
   it should not ship: auth, data loss, races, rollback, empty-state, schema drift. Ground every
   finding in a file:line. Findings only."

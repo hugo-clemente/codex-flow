@@ -30,12 +30,13 @@ never forked.
    is saved, **control returns HERE.** Do NOT present writing-plans' execution-choice menu, and
    do NOT launch plain `superpowers:subagent-driven-development` — this skill owns the hand-off
    (step 5).
-3. **Seam 2 — Codex plan critique** — run the **review lane** (`codex-flow:codex-lanes` §4, doc
-   autofix, `workspace-write`) against the plan file: task ordering, missing rollback steps,
-   untestable acceptance criteria, cross-package sequencing, tasks that span files unsafely.
-   Codex critiques and revises the plan in place.
-4. **No gate — autonomous.** Note the hardened plan and a one-line summary of what Codex changed
-   for the record, then proceed. Do NOT pause for approval; the design doc was already gated.
+3. **Seam 2 — Codex plan critique** — run the **review lane** (`codex-flow:codex-lanes` §4)
+   against the plan file: task ordering, missing rollback steps, untestable acceptance criteria,
+   cross-package sequencing, tasks that span files unsafely. Codex returns findings JSON;
+   adjudicate each finding (accept/reject + one-line reason) and apply the accepted fixes to
+   the plan yourself.
+4. **No gate — autonomous.** Note the adjudication record (what Codex found, what you
+   accepted/rejected and why) for the record, then proceed. Do NOT pause for approval; the design doc was already gated.
 5. **Hand off — REQUIRED SUB-SKILL: sdd-with-codex-implementer** (NOT plain
    `superpowers:subagent-driven-development` — that path drops the Codex implementer lane and the
    final cross-model challenge). Invoked with `--fast` → pass it along; fast mode is flow-wide
@@ -52,6 +53,6 @@ tasks until the plan has cleared Seam 2 — but Seam 2 is autonomous, no human g
 |---|---|
 | bare `codex exec "Read <plan>…"` — hangs, no xhigh, no repo root | use the review-lane recipe in `codex-flow:codex-lanes` verbatim |
 | picked writing-plans' "Subagent-Driven (recommended)" menu → plain SDD | chain to `sdd-with-codex-implementer` |
-| Claude "incorporated the feedback" itself | doc autofix: Codex revises the plan file in place (`workspace-write`) |
+| vague "Codex feedback" paraphrased, no real findings | findings come from the §4 schema'd call; adjudicate each explicitly before editing the plan |
 | started executing before the plan critique | critique first, then execute — no gate |
 | paused for user approval of the plan | autonomous after the design-doc gate; don't re-gate |
