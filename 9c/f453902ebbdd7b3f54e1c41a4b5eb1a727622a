@@ -1,0 +1,31 @@
+README.md
+  s_98752c1eae414b::t_fb70799ad72696 40
+  s_98752c1eae414b::t_de68e8f91a5a7b 24
+.claude-plugin/plugin.json
+  s_98752c1eae414b::t_9c3e4e9a3cbb03 3
+skills/codex-lanes/SKILL.md
+  s_98752c1eae414b::t_5f8785ab442cf7 52-53
+  s_98752c1eae414b::t_0275ca6fa12ad4 84-88,91,97-109,115,122-128
+  s_98752c1eae414b::t_172f068d12f7b6 167
+skills/brainstorming-codex/SKILL.md
+  s_98752c1eae414b::t_12adda68bed597 35-39
+skills/writing-plans-codex/SKILL.md
+  s_98752c1eae414b::t_4eeb40d40f0838 56
+  s_98752c1eae414b::t_401bf1425615b8 33-39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "9cf453902ebbdd7b3f54e1c41a4b5eb1a727622a",
+  "prompts": {},
+  "sessions": {
+    "s_98752c1eae414b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eed962c7-c40d-498b-9525-8ff69f62e343",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hugo CLEMENTE <hugo.clemente@roundtable.eu>"
+    }
+  }
+}
