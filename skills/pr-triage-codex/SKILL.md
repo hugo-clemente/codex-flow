@@ -69,6 +69,13 @@ Obvious mechanical CI breakage (lint, format, a typo the log names exactly) → 
 list marked "auto-fix" and fold it into ONE confirmation question ("auto-fix items #2 #5 #7?")
 instead of one question each. Judgment calls always get their own question.
 
+**Answers that are questions.** An answer (usually via "Other") that asks something, pushes back,
+or signals uncertainty means that item is NOT decided. Answer it in a text message — grounded in
+the actual code/diff/log, not the brief's summary; read the file if you must — then re-ask that
+item in a fresh AskUserQuestion. Step 3 starts only when EVERY item has an explicit decision
+(Fix / Won't fix / Rerun / Defer) — a question, a "hmm", or an unanswered item is never treated
+as acceptance, and nothing is dispatched to the implementer while any item is still in question.
+
 ### 3. Fix — Codex implementer lane
 
 Cluster accepted items by file/theme; ONE `codex exec` implementer call (`codex-lanes` §5) per
@@ -108,6 +115,7 @@ foreground Bash cap is 600s and CI is slower). On exit:
 |---|---|
 | one AskUserQuestion per comment — 15 round-trips | batch 4 per call; auto-fix obvious CI items in one confirmation |
 | questions fired straight after gathering — user decides blind | post the triage brief (table + ELI5) as its own message first; questions only reference its #s |
+| user answered with a question → dispatched anyway | answer it (from the real code/log), re-ask that item; no dispatch while an item is undecided |
 | REST comment list treated as triage list — resolution state invisible | GraphQL `reviewThreads` with `isResolved==false` |
 | resolved threads without replying | reply with the sha, THEN resolve; never resolve won't-fix |
 | foreground `gh pr checks --watch` — killed at 600s | background launch, read result on exit |
